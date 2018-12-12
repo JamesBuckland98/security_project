@@ -72,7 +72,7 @@ public class LoginService implements LoginServiceInterface {
                 return customerEmail;
             }
         }
-        return null;
+        return "null@null.com";
     }
 
     @Override
