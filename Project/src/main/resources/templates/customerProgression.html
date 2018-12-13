@@ -48,25 +48,19 @@
             <!-- Navbar Menu -->
             <ul class="nav navbar-nav navbar-right">
                 <li class="active">
-                    <a th:href="@{/customerProgression}">Progress</a>
+                    <a th:href="@{'/customer/'+${customerID}+'/course_progression'}">Progress</a>
                 </li>
                 <li>
-                    <a href="#">Course Info</a>
+                    <a th:href="@{'/customer/'+${customerID}}">Profile</a>
                 </li>
                 <li>
                     <a href="#feedback">Leave Feedback</a>
                 </li>
 
-                <!-- Navbar link with a dropdown menu -->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Actions
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <a th:href="@{/feedback}">Leave Feedback</a>
-
-                    </ul>
-                </li>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a th:href="@{/register}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
             </ul>
         </div>
     </div>

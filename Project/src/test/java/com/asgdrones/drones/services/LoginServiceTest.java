@@ -41,7 +41,7 @@ public class LoginServiceTest {
 
     @Test
     public void adminLoginTest() throws Exception {
-        Login adminLogin = new Login(null, "John", "password", null);
+        Login adminLogin = new Login(null, null, "John", "password");
         given(this.loginService.checkLogin(adminLogin)).willReturn("admin");
         Cookie adminCookie = new Cookie("Access", "admin");
         mockMvc.perform(
@@ -56,11 +56,11 @@ public class LoginServiceTest {
 
     @Test
     public void instructorLoginTest() throws Exception {
-        Login instructorLogin = new Login(null, "Ins", "pass", null);
+        Login instructorLogin = new Login(null, null, "James", "password");
         given(this.loginService.checkLogin(instructorLogin)).willReturn("instructor");
         Cookie instructorCookie = new Cookie("Access", "instructor");
         mockMvc.perform(
-                post("/login").param("username", "Ins").param("password", "pass")
+                post("/login").param("username", "James").param("password", "password")
                         .contentType(MediaType.APPLICATION_JSON)
         )
                 .andDo(print())
@@ -71,11 +71,11 @@ public class LoginServiceTest {
 
     @Test
     public void customerLoginTest() throws Exception {
-        Login customerLogin = new Login(null, "Custom", "123", null);
+        Login customerLogin = new Login(null, null, "Jim", "123");
         given(this.loginService.checkLogin(customerLogin)).willReturn("customer");
         Cookie customerCookie = new Cookie("Access", "customer");
         mockMvc.perform(
-                post("/login").param("username", "Custom").param("password", "123")
+                post("/login").param("username", "Jim").param("password", "123")
                         .contentType(MediaType.APPLICATION_JSON)
         )
                 .andDo(print())

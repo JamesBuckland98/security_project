@@ -139,7 +139,7 @@ public class RegisterController {
 
 
     @RequestMapping(path = "/register_customer", method = RequestMethod.POST)
-    public ModelAndView addLoginForm(@Valid Login login, @SessionAttribute Address address,
+    public RedirectView addLoginForm(@Valid Login login, @SessionAttribute Address address,
                                @SessionAttribute Customer customer, @SessionAttribute Drone drone,
                                BindingResult bindingResult, Model model) {
         //binding result stops it from being null
@@ -161,7 +161,7 @@ public class RegisterController {
             e.printStackTrace();
         }
         registerService.upload(address, drone, customer, login);
-        return new ModelAndView("login", model.asMap());
+        return new RedirectView("/login");
     }
 
 }

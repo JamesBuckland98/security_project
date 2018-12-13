@@ -1,27 +1,12 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
-
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <title>Bootstrap Navbar Tutorial</title>
-
+    <title>Update Drone</title>
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-
-
-<!-- jQuery CDN -->
-<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-<!-- Bootstrap Js CDN -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</body>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
     <!-- Navbar Container -->
@@ -30,7 +15,9 @@
         <!-- Navbar Header [contains both toggle button and navbar brand] -->
         <div class="navbar-header">
             <!-- Toggle Button [handles opening navbar components on mobile screens]-->
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#exampleNavComponents" aria-expanded"false">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#exampleNavComponents" aria-expanded
+            "false">
             <i class="glyphicon glyphicon-align-center"></i>
             </button>
 
@@ -46,7 +33,7 @@
             <!-- Navbar Menu -->
             <ul class="nav navbar-nav navbar-right">
                 <li class="active">
-                    <a href="#register">Register</a>
+                    <a th:href="@{'/customer/' +${customerID}}">Profile</a>
                 </li>
                 <li>
                     <a href="#">About us</a>
@@ -55,8 +42,9 @@
                     <a href="#">Course Info</a>
                 </li>
                 <li>
-                    <a href="#feedback">Leave Feedback</a>
+                    <a th:href="@{/feedback}">Leave Feedback</a>
                 </li>
+
                 <ul class="nav navbar-nav navbar-right">
                     <li><a th:href="@{/register}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                     <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -65,15 +53,14 @@
         </div>
     </div>
 </nav>
-<div class="container">
-    <div class="container">
-        <div class="header">
-            <h3>ASG DRONES</h3>
-        </div>
-    <div class="jumbotron">
-<h1>Access denied</h1>
-    </div>
-</div>
+<div class="jumbotron">
+    <h1>Update Drone</h1>
+    <form action="#" th:action="@{'/customer/' +${customerID}+ '/update_drone'}" th:object="${drone}" method="post">
+        <p>If you do not have a drone then type "N/A" for both fields</p>
+        <p>Drone Manufacturer: <input th:field="*{manufacturer}"/></p>
+        <p>Drone Model: <input type="text" th:field="*{model}"/></p>
+        <button class="btn" type="submit">update</button>
+    </form>
 </div>
 </body>
 </html>

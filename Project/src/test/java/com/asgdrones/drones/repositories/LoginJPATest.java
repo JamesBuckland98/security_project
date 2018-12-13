@@ -34,7 +34,7 @@ public class LoginJPATest {
 
     @Test
     public void loginAdminTest() throws Exception{
-        this.entityManager.merge(new Login(1L,"John","password","admin"));
+        this.entityManager.merge(new Login(null,"admin","John","password"));
         List<Login> login = this.repository.findByUsernameAndPassword("John","password");
         assertThat(login.get(0).getUsername()).isEqualTo("John");
         assertThat(login.get(0).getPassword()).isEqualTo("password");
@@ -42,15 +42,16 @@ public class LoginJPATest {
     }
     @Test
     public void loginInstructorTest() throws Exception{
-        this.entityManager.merge(new Login(1L,"Jim","password","instructor"));
-        List<Login> login = this.repository.findByUsernameAndPassword("Jim","password");
-        assertThat(login.get(0).getUsername()).isEqualTo("Jim");
-        assertThat(login.get(0).getPassword()).isEqualTo("password");
-        assertThat(login.get(0).getAccess()).isEqualTo("instructor");
+        Login login = new Login(null,"instructor","Jim","password");
+        this.entityManager.merge(login);
+        List<Login> loginList = this.repository.findByUsernameAndPassword("Jim","password");
+        assertThat(loginList.get(0).getUsername()).isEqualTo("Jim");
+        assertThat(loginList.get(0).getPassword()).isEqualTo("password");
+        assertThat(loginList.get(0).getAccess()).isEqualTo("instructor");
     }
     @Test
     public void loginCustomerTest() throws Exception{
-        this.entityManager.merge(new Login(1L,"Jan","password","customer"));
+        this.entityManager.merge(new Login(null,"customer","Jan","password"));
         List<Login> login = this.repository.findByUsernameAndPassword("Jan","password");
         assertThat(login.get(0).getUsername()).isEqualTo("Jan");
         assertThat(login.get(0).getPassword()).isEqualTo("password");
@@ -58,7 +59,7 @@ public class LoginJPATest {
     }
     @Test
     public void loginDeniedTest() throws Exception{
-        this.entityManager.merge(new Login(1L,"Jess","password","customemr"));
+        this.entityManager.merge(new Login(null,"customemr","Jess","password"));
         List<Login> login = this.repository.findByUsernameAndPassword("Jan","password");
         assertThat(login).isEmpty();
     }

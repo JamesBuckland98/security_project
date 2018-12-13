@@ -55,6 +55,7 @@ AUTO_INCREMENT = 13
 DEFAULT CHARACTER SET = latin1;
 
 insert into login (Username, LoginPassword , Access) values ('admin','password','admin');
+insert into login (Username, LoginPassword, Access) values ('instructor','password','instructor');
 
 -- -----------------------------------------------------
 -- Table `asg`.`administrator`
@@ -74,12 +75,12 @@ CREATE TABLE IF NOT EXISTS `asg`.`administrator` (
   CONSTRAINT `fk_administrator_address1`
     FOREIGN KEY (`address_AddressID`)
     REFERENCES `asg`.`address` (`AddressID`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_administrator_login1`
     FOREIGN KEY (`login_LoginID`)
     REFERENCES `asg`.`login` (`LoginID`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
@@ -111,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `asg`.`instructor` (
   `PhoneNumber` CHAR(11) NOT NULL,
   `address_AddressID` INT(10) UNSIGNED NOT NULL,
   `login_LoginID` INT(10) UNSIGNED NOT NULL,
-  `qualification_QualificationID` INT(10) UNSIGNED NULL DEFAULT NULL,
+  `qualification_QualificationID` INT(10) UNSIGNED,
   PRIMARY KEY (`InstructorID`),
   UNIQUE INDEX `InstructorID_UNIQUE` (`InstructorID` ASC),
   INDEX `fk_Instructor_address1_idx` (`address_AddressID` ASC),
@@ -135,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `asg`.`instructor` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
 
-
+insert into instructor(FirstName, LastName, PhoneNumber, address_AddressID, login_LoginID) values ('Jo','Blogs',01294573498,1,14);
 -- -----------------------------------------------------
 -- Table `asg`.`course`
 -- -----------------------------------------------------
@@ -144,10 +145,10 @@ DROP TABLE IF EXISTS `asg`.`course` ;
 CREATE TABLE IF NOT EXISTS `asg`.`course` (
   `CourseID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `CourseName` VARCHAR(45) NOT NULL,
-  `CourseType` VARCHAR(45) NOT NULL,
+  `CourseType` VARCHAR(45),
   `CourseLocation` VARCHAR(45) NOT NULL,
   `CourseDate` DATE NULL DEFAULT NULL,
-  `Instructor_InstructorID` INT(10) UNSIGNED NULL DEFAULT NULL,
+  `Instructor_InstructorID` INT(10) UNSIGNED DEFAULT NULL,
   PRIMARY KEY (`CourseID`),
   UNIQUE INDEX `CourseID_UNIQUE` (`CourseID` ASC),
   INDEX `fk_course_Instructor1_idx` (`Instructor_InstructorID` ASC),
@@ -159,7 +160,8 @@ CREATE TABLE IF NOT EXISTS `asg`.`course` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
 
-
+insert into course(CourseName,CourseType,CourseLocation,CourseDate,Instructor_InstructorID) values ('17-2','type 1','Cardiff','2018-12-31',1);
+insert into course(CourseName, CourseType,CourseLocation,CourseDate,Instructor_InstructorID) values ('87-2','type 2','Cardiff',now(),1);
 -- -----------------------------------------------------
 -- Table `asg`.`creation`
 -- -----------------------------------------------------
@@ -188,7 +190,8 @@ CREATE TABLE IF NOT EXISTS `asg`.`drone` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
 
-
+Insert into drone (Manufacturer, Model) Values ('manufacture 1', 'model 1');
+Insert into drone (Manufacturer, Model) Values('manufacture 2', 'model 2');
 -- -----------------------------------------------------
 -- Table `asg`.`customer`
 -- -----------------------------------------------------
@@ -207,14 +210,14 @@ CREATE TABLE IF NOT EXISTS `asg`.`customer` (
   `EnglishSpeakingLevel` FLOAT NULL DEFAULT NULL,
   `PreferredGSLocation` TEXT NULL DEFAULT NULL,
   `Insured` TINYINT(1) NULL DEFAULT NULL,
+  `Verified` BOOLEAN Null Default false,
   `drone_DroneID` INT(10) UNSIGNED NOT NULL,
   `address_AddressID` INT(10) UNSIGNED NOT NULL,
-  `course_CourseID` INT(10) UNSIGNED NOT NULL,
+  `course_CourseID` INT(10) UNSIGNED,
   `login_LoginID` INT(10) UNSIGNED NOT NULL,
   `creation_CreationID` INT(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`CandidateReferenceID`),
   UNIQUE INDEX `CandidateReferenceID_UNIQUE` (`CandidateReferenceID` ASC),
-  UNIQUE INDEX `Email_UNIQUE` (`Email` ASC),
   INDEX `fk_customer_drone1_idx` (`drone_DroneID` ASC),
   INDEX `fk_customer_address1_idx` (`address_AddressID` ASC),
   INDEX `fk_customer_course1_idx` (`course_CourseID` ASC),
@@ -233,7 +236,7 @@ CREATE TABLE IF NOT EXISTS `asg`.`customer` (
   CONSTRAINT `fk_customer_creation1`
     FOREIGN KEY (`creation_CreationID`)
     REFERENCES `asg`.`creation` (`CreationID`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_customer_drone1`
     FOREIGN KEY (`drone_DroneID`)
@@ -243,7 +246,7 @@ CREATE TABLE IF NOT EXISTS `asg`.`customer` (
   CONSTRAINT `fk_customer_login1`
     FOREIGN KEY (`login_LoginID`)
     REFERENCES `asg`.`login` (`LoginID`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
@@ -352,6 +355,75 @@ end$$
 
 DELIMITER ;
 
+USE `asg`;
+DROP procedure IF EXISTS `asg`.`checkIfCustomerIsVerified`;
+
+DELIMITER $$
+USE `asg`$$
+CREATE PROCEDURE `checkIfCustomerIsVerified`()
+BEGIN
+DECLARE finished INTEGER DEFAULT 0;
+DECLARE variable_customer_ID INTEGER;
+
+DEClARE customers_cursor CURSOR FOR SELECT CandidateReferenceID FROM customer WHERE Verified=0;
+
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1;
+OPEN customers_cursor;
+get_customers_loop: LOOP
+FETCH customers_cursor INTO variable_customer_ID;
+IF finished = 1 THEN 
+				 LEAVE get_customers_loop;
+				 END IF;
+                 		-- add bussiness logic here 
+						DELETE FROM login
+                        WHERE LoginID = (SELECT login_loginID FROM customer WHERE CandidateReferenceID=variable_customer_ID);
+		 END LOOP get_customers_loop;
+         CLOSE customers_cursor;
+         DELETE FROM customer
+			WHERE Verified = 0;
+
+END$$
+
+DELIMITER ;
+
+-- CALL checkIfCustomerIsVerified();
+-- select * from login;
+-- select * from customer;
+
+USE `asg`;
+DROP procedure IF EXISTS `asg`.`deleteIfDeletionDateExpires`;
+
+DELIMITER $$
+USE `asg`$$
+CREATE PROCEDURE `deleteIfDeletionDateExpires`()
+Begin
+DECLARE finished INTEGER DEFAULT 0;
+DECLARE variable_creation_ID INTEGER;
+DEClARE creation_cursor CURSOR FOR SELECT CreationID FROM creation WHERE DeletionDate >= now();
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1;
+OPEN creation_cursor;
+get_creation_loop: LOOP
+FETCH creation_cursor INTO variable_creation_ID;
+IF finished = 1 THEN 
+				 LEAVE get_creation_loop;
+				 END IF;
+                 
+                 DELETE FROM login
+                 WHERE LoginID = (SELECT login_LoginID FROM customer WHERE creation_CreationID = variable_creation_ID);
+                 DELETE FROM customer
+                 WHERE creation_CreationID = (SELECT CreationID FROM creation WHERE CreationID = variable_creation_ID);
+                 
+                 END LOOP get_creation_loop;
+                 
+         CLOSE creation_cursor;
+         DELETE FROM creation
+			WHERE DeletionDate >= now();
+End $$
+
+-- CALL deleteIfDeletionDateExpires();
+-- select * from login;
+-- select * from customer;
+-- select * from creation;
 -- -----------------------------------------------------
 -- View `asg`.`adminadetails`
 -- -----------------------------------------------------
@@ -800,11 +872,6 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
-INSERT INTO drone (DroneID, Manufacturer, Model) VALUES (null, 'TestManu', 'TestMod');
-INSERT INTO customer (CandidateReferenceID, FirstName, LastName, Dob, Email, PhoneNumber, Paid, HoursOfFlying, Disability, EnglishSpeakingLevel, PreferredGSLocation, Insured, drone_DroneID, address_AddressID, course_CourseID, login_LoginID, creation_CreationID)
-VALUES
-(null, 'TestFirst', 'TestLast', '1990-01-01', 'testcustom1@gmail.com', '01234567890', True, 20, 'None', 7, 'Cardiff', True, 1, 1, 1, 14, 1);
-UPDATE course SET instructor_InstructorID = 2 WHERE courseID >= 1;
 SELECT * FROM address;
 select * from creation;
 select * from customer;

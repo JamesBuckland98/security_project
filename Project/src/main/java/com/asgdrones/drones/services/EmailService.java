@@ -24,4 +24,12 @@ public class EmailService {
         helper.setSubject("Hi");
         sender.send(message);
     }
+    public void rememberPassword(String email, String password) throws Exception {
+        MimeMessage message = sender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        helper.setTo(email);
+        helper.setText("Password: "+ password);
+        helper.setSubject("Forgotten password");
+        sender.send(message);
+    }
 }

@@ -9,7 +9,11 @@ public enum Templates {
     CUSTOMER_PROGRESSION("customerProgression"),
     ACCESS_DENIED("accessDenied"),
     CREATE_COURSE_DATE("createCourseDate"),
-    COURSE_CREATED("courseCreated");
+    COURSE_CREATED("courseCreated"),
+    INSTRUCTOR_CUSTOMER("instructorCustomer"),
+    UPDATE_ADDRESS("updateAddress"),
+    UPDATE_DRONE("updateDrone"),
+    ADD_COURSE("addCourse");
 
     private final String name;
 

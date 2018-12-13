@@ -62,6 +62,9 @@ public class Customer {
     @Column(name = "insured")
     private Boolean insured;
 
+    @Column(name = "verified")
+    private Boolean verified;
+
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "login_LoginID")
     private Login login;

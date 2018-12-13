@@ -55,6 +55,7 @@ AUTO_INCREMENT = 13
 DEFAULT CHARACTER SET = latin1;
 
 insert into login (Username, LoginPassword , Access) values ('admin','password','admin');
+insert into login (Username, LoginPassword, Access) values ('instructor','password','instructor');
 
 -- -----------------------------------------------------
 -- Table `asg`.`administrator`
@@ -111,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `asg`.`instructor` (
   `PhoneNumber` CHAR(11) NOT NULL,
   `address_AddressID` INT(10) UNSIGNED NOT NULL,
   `login_LoginID` INT(10) UNSIGNED NOT NULL,
-  `qualification_QualificationID` INT(10) UNSIGNED NULL DEFAULT NULL,
+  `qualification_QualificationID` INT(10) UNSIGNED,
   PRIMARY KEY (`InstructorID`),
   UNIQUE INDEX `InstructorID_UNIQUE` (`InstructorID` ASC),
   INDEX `fk_Instructor_address1_idx` (`address_AddressID` ASC),
@@ -135,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `asg`.`instructor` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
 
-
+insert into instructor(FirstName, LastName, PhoneNumber, address_AddressID, login_LoginID) values ('Jo','Blogs',01294573498,1,14);
 -- -----------------------------------------------------
 -- Table `asg`.`course`
 -- -----------------------------------------------------
@@ -144,10 +145,10 @@ DROP TABLE IF EXISTS `asg`.`course` ;
 CREATE TABLE IF NOT EXISTS `asg`.`course` (
   `CourseID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `CourseName` VARCHAR(45) NOT NULL,
-  `CourseType` VARCHAR(45) NOT NULL,
+  `CourseType` VARCHAR(45),
   `CourseLocation` VARCHAR(45) NOT NULL,
   `CourseDate` DATE NULL DEFAULT NULL,
-  `Instructor_InstructorID` INT(10) UNSIGNED NULL DEFAULT NULL,
+  `Instructor_InstructorID` INT(10) UNSIGNED DEFAULT NULL,
   PRIMARY KEY (`CourseID`),
   UNIQUE INDEX `CourseID_UNIQUE` (`CourseID` ASC),
   INDEX `fk_course_Instructor1_idx` (`Instructor_InstructorID` ASC),
@@ -159,7 +160,8 @@ CREATE TABLE IF NOT EXISTS `asg`.`course` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
 
-
+insert into course(CourseName,CourseLocation,Instructor_InstructorID) values ('17-2','Cardiff',1);
+insert into course(CourseName, CourseType,CourseLocation,CourseDate,Instructor_InstructorID) values ('87-2','type 2','Cardiff',now(),1);
 -- -----------------------------------------------------
 -- Table `asg`.`creation`
 -- -----------------------------------------------------
@@ -207,14 +209,14 @@ CREATE TABLE IF NOT EXISTS `asg`.`customer` (
   `EnglishSpeakingLevel` FLOAT NULL DEFAULT NULL,
   `PreferredGSLocation` TEXT NULL DEFAULT NULL,
   `Insured` TINYINT(1) NULL DEFAULT NULL,
+  `Verified` BOOLEAN Null Default false,
   `drone_DroneID` INT(10) UNSIGNED NOT NULL,
   `address_AddressID` INT(10) UNSIGNED NOT NULL,
-  `course_CourseID` INT(10) UNSIGNED NOT NULL,
+  `course_CourseID` INT(10) UNSIGNED,
   `login_LoginID` INT(10) UNSIGNED NOT NULL,
   `creation_CreationID` INT(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`CandidateReferenceID`),
   UNIQUE INDEX `CandidateReferenceID_UNIQUE` (`CandidateReferenceID` ASC),
-  UNIQUE INDEX `Email_UNIQUE` (`Email` ASC),
   INDEX `fk_customer_drone1_idx` (`drone_DroneID` ASC),
   INDEX `fk_customer_address1_idx` (`address_AddressID` ASC),
   INDEX `fk_customer_course1_idx` (`course_CourseID` ASC),
@@ -800,11 +802,6 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
-INSERT INTO drone (DroneID, Manufacturer, Model) VALUES (null, 'TestManu', 'TestMod');
-INSERT INTO customer (CandidateReferenceID, FirstName, LastName, Dob, Email, PhoneNumber, Paid, HoursOfFlying, Disability, EnglishSpeakingLevel, PreferredGSLocation, Insured, drone_DroneID, address_AddressID, course_CourseID, login_LoginID, creation_CreationID)
-VALUES
-(null, 'TestFirst', 'TestLast', '1990-01-01', 'testcustom1@gmail.com', '01234567890', True, 20, 'None', 7, 'Cardiff', True, 1, 1, 1, 14, 1);
-UPDATE course SET instructor_InstructorID = 2 WHERE courseID >= 1;
 SELECT * FROM address;
 select * from creation;
 select * from customer;

@@ -3,7 +3,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <link rel="stylesheet" th:href="@{/css/admin.css}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,8 +11,6 @@
 
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="style.css">
     <title>Admin</title>
 </head>
 <body>
@@ -40,38 +37,27 @@
             <!-- Navbar Menu -->
             <ul class="nav navbar-nav navbar-right">
                 <li class="active">
-                    <a th:href="@{/adminAccount}">Admin</a>
+                    <a th:href="@{'/admin/' +${adminID}}">Admin</a>
                 </li>
                 <li>
-                    <a href="#">About us</a>
+                    <a th:href="@{'/admin/'+${loginID}+'/createcoursedate'}">Create Course</a>
                 </li>
                 <li>
                     <a href="#">Course Info</a>
                 </li>
-                <li>
-                    <a th:href="@{/feedback}">Leave Feedback</a>
-                </li>
-
-                <!-- Navbar link with a dropdown menu -->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Actions
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">My Dashboard</a></li>
-                        <li><a th:href="@{/login}">Log out</th></a></li>
-
-                    </ul>
-                </li>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a th:href="@{/register}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
             </ul>
         </div>
     </div>
 </nav>
 </body>
+<div class="jumbotron">
 <div id="welcome">
     <H2><span th:text="Welcome+' '+${AdminName}"></span></H2>
 </div>
-<div class="jumbotron">
 <div id="customerSearch">
     <h2>Search</h2>
     <form action="#" th:action="@{/admin_search}" th:object="${searchQuery}" method="post">
@@ -89,7 +75,7 @@
     <span th:text="${city}">city</span> <br>
 </div>
 
-<table>
+<table class="table">
     <thead>
     <tr>
         <th>Name</th>

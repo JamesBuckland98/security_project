@@ -33,13 +33,9 @@ public class CreateCourseFormTest{
 
     @Test
     public void testCreateCourseDate() throws Exception {
-
-
-        this.mockMvc.perform(get("/createcoursedate")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Date")))
-        .andExpect(content().string(containsString("Course Name")))
-        .andExpect(content().string(containsString("Course Date")))
-        .andExpect(content().string(containsString("Course Location")));
+        this.mockMvc.perform(get("createcoursedate"))
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 
 

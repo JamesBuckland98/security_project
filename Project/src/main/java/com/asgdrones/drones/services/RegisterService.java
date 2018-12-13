@@ -40,7 +40,7 @@ public class RegisterService implements RegisterServiceInterface {
                 customer.getEmail(), customer.getPhoneNumber(),
                 customer.getPaid(), customer.getHoursOfFlying(),
                 customer.getDisability(), customer.getEnglishSpeakingLevel(), customer.getPreferredGSLocation(),
-                customer.getInsured(), newLogin, newDrone, address,course,creation);
+                customer.getInsured(),false, newLogin, newDrone, address,null,creation);
         System.out.println(newCustomer);
 //        droneRepoJPA.save(newDrone);
 //        loginRepoJPA.save(newLogin);

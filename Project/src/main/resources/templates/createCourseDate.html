@@ -3,14 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <title>Create Course Date</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
-<form action="#" th:action="@{/createcoursedate}" th:object="${course}" method="post">
-    <p>Course Name: <input type="text" th:field="*{CourseName}"/></p>
-    <p>Course Type: <input type="text" th:field="*{CourseType}"/></p>
-    <p>Course Location: <input type="text" th:field="*{CourseLocation}"/></p>
-    <p>Date: <input type="date" th:field="*{CourseDate}"/></p>
-    <input type="submit" value="Create"></input>
-</form>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <!-- Navbar Container -->
+    <div class="container">
+
+        <!-- Navbar Header [contains both toggle button and navbar brand] -->
+        <div class="navbar-header">
+            <!-- Toggle Button [handles opening navbar components on mobile screens]-->
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#exampleNavComponents" aria-expanded
+            "false">
+            <i class="glyphicon glyphicon-align-center"></i>
+            </button>
+
+            <!-- Navbar Brand -->
+            <a href="#" class="navbar-brand">
+            </a>
+        </div>
+
+
+        <!-- Navbar Collapse [contains navbar components such as navbar menu and forms ] -->
+        <div class="collapse navbar-collapse" id="exampleNavComponents">
+
+            <!-- Navbar Menu -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active">
+                    <a th:href="@{'/admin/' +${adminID}}">Admin</a>
+                </li>
+                <li>
+                    <a th:href="@{'/admin/'+${loginID}+'/createcoursedate'}">Create Course</a>
+                </li>
+                <li>
+                    <a href="#">Course Info</a>
+                </li>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a th:href="@{/register}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="jumbotron">
+    <h1>Create Course</h1>
+    <form action="#" th:action="@{/createcoursedate}" th:object="${course}" method="post">
+        <p>Course Name: <input type="text" th:field="*{CourseName}"/></p>
+        <p>Course Type: <input type="text" th:field="*{CourseType}"/></p>
+        <p>Course Location: <input type="text" th:field="*{CourseLocation}"/></p>
+        <p>Date: <input type="date" th:field="*{CourseDate}"/></p>
+        <input type="submit" value="Create"></input>
+    </form>
+</div>
 </body>
 </html>

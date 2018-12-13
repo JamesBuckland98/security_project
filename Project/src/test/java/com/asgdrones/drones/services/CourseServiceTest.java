@@ -43,7 +43,5 @@ public class CourseServiceTest {
         assertThat(courseList.get(0).getCourseName()).isEqualTo("Course1");
         assertThat(courseList.get(0).getCourseType()).isEqualTo("Type2");
         assertThat(courseList.get(0).getId()).isEqualTo(1L);
-
-
     }
 }

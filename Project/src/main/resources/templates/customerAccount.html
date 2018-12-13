@@ -1,10 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Bootstrap Navbar Tutorial</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/customer.css}">
 </head>
 <body>
-<h1>Customer Account</h1>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <!-- Navbar Container -->
+    <div class="container">
+
+        <!-- Navbar Header [contains both toggle button and navbar brand] -->
+        <div class="navbar-header">
+            <!-- Toggle Button [handles opening navbar components on mobile screens]-->
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#exampleNavComponents" aria-expanded
+            "false">
+            <i class="glyphicon glyphicon-align-center"></i>
+            </button>
+
+            <!-- Navbar Brand -->
+            <a href="#" class="navbar-brand">
+            </a>
+        </div>
+
+
+        <!-- Navbar Collapse [contains navbar components such as navbar menu and forms ] -->
+        <div class="collapse navbar-collapse" id="exampleNavComponents">
+
+            <!-- Navbar Menu -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active">
+                    <a th:href="@{'/customer/' +${customerID}}">Profile</a>
+                </li>
+                <li>
+                    <a th:href="@{'/customer/' +${customerID}+ '/course_progression'}">Progression</a>
+                </li>
+                <li>
+                    <a href="#">Course Info</a>
+                </li>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a th:href="@{/register}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="jumbotron">
+    <h1>Customer Account</h1>
+    <div id="welcome">
+        <H2><span th:text="Welcome+' '+${name}"></span></H2>
+        <div th:if="${verified != true}">
+        <button class="btn"><a th:href="@{'/customer/' +${customerID}+'/verify_customer'}"> Verify account</a></button>
+        </div>
+    </div>
+    <div id="address">
+        <h2 class="h2">Address</h2>
+        <span th:text="${houseNumber}">house number</span>
+        <span th:text="${houseName}">house name</span><br>
+        <span th:text="${street}">street</span> <br>
+        <span th:text="${postCode}">post code</span> <br>
+        <span th:text="${city}">city</span> <br>
+        <button class="btn"> <a th:href="@{'/customer/' +${customerID}+'/update_address'}" style="text-decoration:none">Update Address Info</a></button>
+    </div>
+    <div id="drone">
+        <h2 class="h2">Drone</h2>
+        <span th:text="${droneManufacturer}">city</span> <br>
+        <span th:text="${droneModel}">city</span> <br>
+        <button class="btn"> <a th:href="@{'/customer/' +${customerID}+'/update_drone'}" style="text-decoration:none">Update Drone Info</a></button>
+    </div>
+    <div id="course">
+        <h2 class="h2">Course</h2>
+        <div th:if="${courses != null}">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Course Name</th>
+                    <th>Course Type</th>
+                    <th>Course Location</th>
+                    <th>Course Date</th>
+                    <th>Instructor</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="course: ${courses}">
+                    <td><span th:text="${course.courseName}"> name </span></td>
+                    <td><span th:text="${course.courseType}"> type </span></td>
+                    <td><span th:text="${course.courseLocation}"> location </span></td>
+                    <td><span th:text="${course.courseDate}"> location </span></td>
+                    <td><span th:text="${course.instructor.firstName}"> instructor </span></td>
+                </tr>
+                </tbody>
+            </table>
+            <button class="btn"><a th:href="@{'/customer/' +${customerID}+'/add_course'}" style="text-decoration:none">Change Course</a></button>
+        </div>
+        <div th:if="${courses == null}">
+            <button class="btn"> <a th:href="@{'/customer/' +${customerID}+'/add_course'}" style="text-decoration:none">+ add course</a></button>
+        </div>
+    </div>
+</div>
 </body>
 </html>

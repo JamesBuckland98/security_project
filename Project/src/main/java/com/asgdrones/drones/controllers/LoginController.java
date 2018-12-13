@@ -3,6 +3,7 @@ package com.asgdrones.drones.controllers;
 import com.asgdrones.drones.domain.Login;
 import com.asgdrones.drones.enums.Templates;
 import com.asgdrones.drones.repositories.LoginRepoJPA;
+import com.asgdrones.drones.services.EmailService;
 import com.asgdrones.drones.services.LoginService;
 import com.asgdrones.drones.services.LoginServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +26,20 @@ import java.util.Optional;
 public class LoginController {
     private LoginRepoJPA loginRepoJPA;
     private LoginServiceInterface loginService;
+    private EmailService emailService;
     private String page;
 
     @Autowired
-    LoginController(LoginRepoJPA LRepo, LoginServiceInterface LService) {
+    LoginController(LoginRepoJPA LRepo, LoginServiceInterface LService, EmailService eService) {
         loginRepoJPA = LRepo;
         loginService = LService;
+        emailService = eService;
     }
 
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
-    public ModelAndView getLogin(Model model,HttpServletResponse response) {
-        response.addCookie (new Cookie("Access", null));
+    public ModelAndView getLogin(Model model, HttpServletResponse response) {
+        response.addCookie(new Cookie("Access", null));
         Login login = new Login();
         model.addAttribute("login", login);
         return new ModelAndView("login", model.asMap());
@@ -52,10 +55,10 @@ public class LoginController {
         } else {
             String access = loginService.checkLogin(login);
             response.addCookie(new Cookie("Access", access));
-            if(access.equals("none")){
+            if (access.equals("none")) {
                 page = "login";
                 System.out.println(page);
-            }else {
+            } else {
                 page = access + "/" + loginService.getUserID(login);
                 System.out.println(page);
             }
@@ -63,5 +66,21 @@ public class LoginController {
 
         model.addAttribute("login", login);
         return new RedirectView(page);
+    }
+
+    @RequestMapping(value = "/rememberMe", method = RequestMethod.GET)
+    public ModelAndView rememberMe(Model model) {
+        Login login = new Login();
+        model.addAttribute("login", login);
+        return new ModelAndView("forgottenPassword", model.asMap());
+    }
+
+    @RequestMapping(value = "/rememberMe", method = RequestMethod.POST)
+    public RedirectView rememberMePost(@Valid String username,
+                                       Model model) throws Exception {
+        String email =  loginService.getCustomerEmail(username);
+        String password = loginService.getCustomerPassword(username);
+        emailService.rememberPassword(email, password);
+        return new RedirectView("/login");
     }
 }

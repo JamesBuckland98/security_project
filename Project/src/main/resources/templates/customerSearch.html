@@ -2,8 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <link rel="stylesheet" th:href="@{/css/admin.css}">
-    <link rel="stylesheet" th:href="@{/css/adminSearch.css}">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,8 +10,6 @@
 
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -23,7 +19,9 @@
         <!-- Navbar Header [contains both toggle button and navbar brand] -->
         <div class="navbar-header">
             <!-- Toggle Button [handles opening navbar components on mobile screens]-->
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#exampleNavComponents" aria-expanded"false">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#exampleNavComponents" aria-expanded
+            "false">
             <i class="glyphicon glyphicon-align-center"></i>
             </button>
 
@@ -41,57 +39,50 @@
                 <li class="active">
                     <a href="#customerSearch">Search</a>
                 </li>
-
-                <!-- Navbar link with a dropdown menu -->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin Actions
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Edit Customers</a></li>
-                        <li><a href="#">Edit Instructors</a></li>
-                        <a th:href="@{/feedback}">Leave Feedback</a>
-
-                    </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a th:href="@{/register}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 <div class="jumbotron">
-<table>
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Date of Birth</th>
-        <th>Email</th>
-        <th>Phone number</th>
-        <th>Subscription Paid?</th>
-        <th>Hours of Flying</th>
-        <th>Has Disability?</th>
-        <th>English Speaking Level</th>
-        <th>Preferred GS Location</th>
-        <th>Insured</th>
-        <th>Access</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="customer: ${customers}">
-        <td><a th:href="@{/customer/{customerID}/course_progression(customerID= ${customer.id})}"><span
-                th:text="${customer.firstName} +' '+ ${customer.lastName}">Customer Name</span></a></td>
-        <td><span th:text="${customer.dob}"> </span></td>
-        <td><span th:text="${customer.email}"></span></td>
-        <td><span th:text="${customer.phoneNumber}"></span></td>
-        <td><span th:text="${customer.paid}"></span></td>
-        <td><span th:text="${customer.hoursOfFlying}"></span></td>
-        <td><span th:text="${customer.disability}"></span></td>
-        <td><span th:text="${customer.englishSpeakingLevel}"></span></td>
-        <td><span th:text="${customer.preferredGSLocation}"></span></td>
-        <td><span th:text="${customer.insured}"></span></td>
-        <td><span th:text="${customer.login.access}"></span></td>
-    </tr>
-    </tbody>
-</table>
+    <h1>Users</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Email</th>
+            <th>Phone number</th>
+            <th>Subscription Paid?</th>
+            <th>Hours of Flying</th>
+            <th>Has Disability?</th>
+            <th>English Speaking Level</th>
+            <th>Preferred GS Location</th>
+            <th>Insured</th>
+            <th>Access</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="customer: ${customers}">
+            <td><a th:href="@{/customer/{customerID}/course_progression(customerID= ${customer.id})}"><span
+                    th:text="${customer.firstName} +' '+ ${customer.lastName}">Customer Name</span></a></td>
+            <td><span th:text="${customer.dob}"> </span></td>
+            <td><span th:text="${customer.email}"></span></td>
+            <td><span th:text="${customer.phoneNumber}"></span></td>
+            <td><span th:text="${customer.paid}"></span></td>
+            <td><span th:text="${customer.hoursOfFlying}"></span></td>
+            <td><span th:text="${customer.disability}"></span></td>
+            <td><span th:text="${customer.englishSpeakingLevel}"></span></td>
+            <td><span th:text="${customer.preferredGSLocation}"></span></td>
+            <td><span th:text="${customer.insured}"></span></td>
+            <td><span th:text="${customer.login.access}"></span></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>
