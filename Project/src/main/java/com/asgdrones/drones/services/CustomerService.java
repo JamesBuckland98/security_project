@@ -79,15 +79,15 @@ public class CustomerService implements CustomerServiceInterface {
 
     @Override
     public Integer getCourseProgression(Long id) {
-        Optional<Customer> customer = customerRepoJPA.findById(id);
-        if (customer.isPresent()) {
-            String courseName = customer.get().getCourse().getCourseName();
-            System.out.println(courseName);
-            if (courseName.equals(String.valueOf(Courses.COURSE_1))) {
+        Customer customer = customerRepoJPA.findByLogin_Id(id);
+        if (customer != null) {
+            String courseType = customer.getCourse().getCourseType();
+            System.out.println(courseType);
+            if (courseType.equals(String.valueOf(Courses.COURSE_1))) {
                 progression = 1;
-            } else if (courseName.equals(String.valueOf(Courses.COURSE_2))) {
+            } else if (courseType.equals(String.valueOf(Courses.COURSE_2))) {
                 progression = 2;
-            } else if (courseName.equals(String.valueOf(Courses.COURSE_3))) {
+            } else if (courseType.equals(String.valueOf(Courses.COURSE_3))) {
                 progression = 3;
             } else {
                 progression = 0;

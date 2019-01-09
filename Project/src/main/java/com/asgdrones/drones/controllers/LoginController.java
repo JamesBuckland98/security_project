@@ -24,14 +24,12 @@ import java.util.Optional;
 
 @Controller
 public class LoginController {
-    private LoginRepoJPA loginRepoJPA;
     private LoginServiceInterface loginService;
     private EmailService emailService;
     private String page;
 
     @Autowired
     LoginController(LoginRepoJPA LRepo, LoginServiceInterface LService, EmailService eService) {
-        loginRepoJPA = LRepo;
         loginService = LService;
         emailService = eService;
     }

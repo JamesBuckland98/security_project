@@ -23,7 +23,7 @@ public class Instructor {
     @Column(name = "lastname")
     private String lastName;
 
-    @Column(name = "PhoneNumber")
+    @Column(name = "Phonenumber")
     private String phoneNumber;
 
     @OneToOne (fetch = FetchType.EAGER, cascade = CascadeType.ALL)
