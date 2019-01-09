@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface InstructorRepoJPA extends JpaRepository<Instructor,Long>,InstructorRepo {
-    @Query(value = "SELECT c.CourseLocation FROM instructor i JOIN course c ON i.InstructorID = c.Instructor_InstructorID WHERE i.login_LoginID = :loginID", nativeQuery = true)
+    @Query(value = "SELECT c.Location FROM course c JOIN instructor i ON i.InstructorID = c.Instructor_InstructorID WHERE i.login_LoginID = :loginID", nativeQuery = true)
     List<String> getInstructorAddresses(@Param("loginID") Long loginID);
 
     @Query(value = "SELECT LoginID FROM Login WHERE Username = :un", nativeQuery = true)

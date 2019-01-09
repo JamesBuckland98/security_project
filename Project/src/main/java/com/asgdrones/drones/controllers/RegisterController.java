@@ -27,7 +27,6 @@ public class RegisterController {
 
     @Autowired
     public RegisterController(RegisterService rService, EmailService eService) {
-
         registerService = rService;
         emailService = eService;
     }

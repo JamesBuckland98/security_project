@@ -18,16 +18,16 @@ public class Course {
     @Column(name = "courseid")
     private Long id;
 
-    @Column(name = "CourseName")
+    @Column(name = "Name")
     private String courseName;
 
-    @Column(name = "CourseType")
+    @Column(name = "Type")
     private String courseType;
 
-    @Column(name = "CourseLocation")
+    @Column(name = "Location")
     private String courseLocation;
 
-    @Column(name = "CourseDate")
+    @Column(name = "Date")
     private Date courseDate;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = true)

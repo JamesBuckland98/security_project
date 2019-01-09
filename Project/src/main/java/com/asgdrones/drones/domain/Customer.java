@@ -34,14 +34,14 @@ public class Customer {
     private String lastName;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "dob")
+    @Column(name = "dateofbirth")
     private Date Dob;
 
     @Column(name = "email")
     private String email;
 
     @Size(min = 11, max = 11)
-    @Column(name = "phonenumber")
+    @Column(name = "Phonenumber")
     private String phoneNumber;
 
     @Column(name = "paid")

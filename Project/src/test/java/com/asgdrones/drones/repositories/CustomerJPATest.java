@@ -37,41 +37,41 @@ public class CustomerJPATest {
         Login login = new Login(1L, "customer", "jbuckland", "1234");
         Drone drone = new Drone(1L, "n/a", "n/a");
         Instructor instructor = new Instructor(1L, "james", "buckland", "01895430027", login, address);
-        Course course = new Course(1L, "Course1", "Type2", "Cardiff", java.sql.Date.valueOf(LocalDate.now()), instructor);
-        this.entityManager.merge(new Customer(1L, "James", "Buckland",
+        Course course = new Course(null, "Course1", "Type2", "Cardiff", java.sql.Date.valueOf(LocalDate.now()), instructor);
+        this.entityManager.merge(new Customer(null, "James", "Buckland",
                 new Date(16 / 11 / 1998), "j@gmail.com", "01735432576",
                 true, (float) 13.0, "none", (float) 5.0, "Cardiff",
                 true,false, login, drone, address, course, creation));
         List<Customer> customerList = this.customerRepoJPA.findAll();
-        assertThat(customerList.get(0).getFirstName()).isEqualTo("James");
-        assertThat(customerList.get(0).getLastName()).isEqualTo("Buckland");
-        assertThat(customerList.get(0).getDob()).isEqualTo(new Date(16 / 11 / 1998));
-        assertThat(customerList.get(0).getEmail()).isEqualTo("j@gmail.com");
-        assertThat(customerList.get(0).getPhoneNumber()).isEqualTo("01735432576");
-        assertThat(customerList.get(0).getPaid()).isTrue();
-        assertThat(customerList.get(0).getHoursOfFlying()).isEqualTo((float) 13.0);
-        assertThat(customerList.get(0).getDisability()).isEqualTo("none");
-        assertThat(customerList.get(0).getPreferredGSLocation()).isEqualTo("Cardiff");
-        assertThat(customerList.get(0).getEnglishSpeakingLevel()).isEqualTo((float) 5.0);
-        assertThat(customerList.get(0).getAddress().getPostcode()).isEqualTo("CF244AN");
-        assertThat(customerList.get(0).getAddress().getCity()).isEqualTo("Cardiff");
-        assertThat(customerList.get(0).getAddress().getHouseNumber()).isEqualTo(4);
-        assertThat(customerList.get(0).getAddress().getHouseName()).isEqualTo("");
-        assertThat(customerList.get(0).getAddress().getStreet()).isEqualTo("Abby Lane");
-        assertThat(customerList.get(0).getLogin().getUsername()).isEqualTo("jbuckland");
-        assertThat(customerList.get(0).getLogin().getPassword()).isEqualTo("1234");
-        assertThat(customerList.get(0).getLogin().getAccess()).isEqualTo("customer");
+        assertThat(customerList.get(customerList.size()-1).getFirstName()).isEqualTo("James");
+        assertThat(customerList.get(customerList.size()-1).getLastName()).isEqualTo("Buckland");
+        assertThat(customerList.get(customerList.size()-1).getDob()).isEqualTo(new Date(16 / 11 / 1998));
+        assertThat(customerList.get(customerList.size()-1).getEmail()).isEqualTo("j@gmail.com");
+        assertThat(customerList.get(customerList.size()-1).getPhoneNumber()).isEqualTo("01735432576");
+        assertThat(customerList.get(customerList.size()-1).getPaid()).isTrue();
+        assertThat(customerList.get(customerList.size()-1).getHoursOfFlying()).isEqualTo((float) 13.0);
+        assertThat(customerList.get(customerList.size()-1).getDisability()).isEqualTo("none");
+        assertThat(customerList.get(customerList.size()-1).getPreferredGSLocation()).isEqualTo("Cardiff");
+        assertThat(customerList.get(customerList.size()-1).getEnglishSpeakingLevel()).isEqualTo((float) 5.0);
+        assertThat(customerList.get(customerList.size()-1).getAddress().getPostcode()).isEqualTo("CF244AN");
+        assertThat(customerList.get(customerList.size()-1).getAddress().getCity()).isEqualTo("Cardiff");
+        assertThat(customerList.get(customerList.size()-1).getAddress().getHouseNumber()).isEqualTo(4);
+        assertThat(customerList.get(customerList.size()-1).getAddress().getHouseName()).isEqualTo("");
+        assertThat(customerList.get(customerList.size()-1).getAddress().getStreet()).isEqualTo("Abby Lane");
+        assertThat(customerList.get(customerList.size()-1).getLogin().getUsername()).isEqualTo("jbuckland");
+        assertThat(customerList.get(customerList.size()-1).getLogin().getPassword()).isEqualTo("1234");
+        assertThat(customerList.get(customerList.size()-1).getLogin().getAccess()).isEqualTo("customer");
     }
 
     @Test
     public void searchQueryTestByFirstName() throws Exception {
-        Drone drone = new Drone(1L, "n/a", "n/a");
+        Drone drone = new Drone(null, "n/a", "n/a");
         Creation creation = new Creation(null, java.sql.Date.valueOf(LocalDate.now()), java.sql.Date.valueOf(LocalDate.now().plusYears(2)));
-        Address address = new Address(1L, "CF244AN", "Cardiff", "Abby Lane", 4, "");
-        Login login = new Login(1L, "customer", "jbuckland", "1234");
-        Instructor instructor = new Instructor(1L, "james", "buckland", "01895430027", login, address);
-        Course course = new Course(1L, "Course1", "Type2", "Cardiff", java.sql.Date.valueOf(LocalDate.now()), instructor);
-        this.entityManager.merge(new Customer(2L, "Arron", "Li",
+        Address address = new Address(null, "CF244AN", "Cardiff", "Abby Lane", 4, "");
+        Login login = new Login(null, "customer", "jbuckland", "1234");
+        Instructor instructor = new Instructor(null, "james", "buckland", "01895430027", login, address);
+        Course course = new Course(null, "Course1", "Type2", "Cardiff", java.sql.Date.valueOf(LocalDate.now()), instructor);
+        this.entityManager.merge(new Customer(null, "Arron", "Li",
                 new Date(5 / 7 / 1992), "a@gmail.com", "01643875987",
                 true, (float) 13.0, "none", (float) 5.0, "Cardiff",
                 true, false, login, drone, address, course, creation));
@@ -87,7 +87,7 @@ public class CustomerJPATest {
         Login login = new Login(1L, "customer", "jbuckland", "1234");
         Instructor instructor = new Instructor(1L, "james", "buckland", "01895430027", login, address);
         Course course = new Course(1L, "Course1", "Type2", "Cardiff", java.sql.Date.valueOf(LocalDate.now()), instructor);
-        this.entityManager.merge(new Customer(1L, "James", "Buckland",
+        this.entityManager.merge(new Customer(null, "James", "Buckland",
                 new Date(16 / 11 / 1998), "j@gmail.com", "01735432576",
                 true, (float) 13.0, "none", (float) 5.0, "Cardiff",
                 true, false, login, drone, address, course, creation));
@@ -99,7 +99,7 @@ public class CustomerJPATest {
         Drone drone = new Drone(null, "n/a", "n/a");
         Creation creation = new Creation(null, java.sql.Date.valueOf(LocalDate.now()), java.sql.Date.valueOf(LocalDate.now().plusYears(2)));
         Address address = new Address(null, "CF244AN", "Cardiff", "Abby Lane", 4, "");
-        Login login = new Login(null, "customer", "jbuckland3", "1234");
+        Login login = new Login(null, "customer", "jbuckland4", "1234");
         Instructor instructor = new Instructor(null, "james", "buckland", "01895430027", login, address);
         Course course = new Course(null, "Course1", "Type2", "Cardiff", java.sql.Date.valueOf(LocalDate.now()), instructor);
         Customer newCustomer = new Customer(null, "Jim", "Buckland",

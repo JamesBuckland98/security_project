@@ -35,16 +35,16 @@ public class CourseJPATest {
 
     @Test
     public void CourseRepoTest(){
-        Address address = new Address(1L,"CF244AN","Cardiff","Abby Lane",4,"");
-        Login login = new Login(1L,"jbuckland","1234","customer");
-        Instructor instructor = new Instructor(1L,"james","buckland","01895430027",login,address);
-        Course course = new Course(1L,"Course1","Type2","Cardiff", java.sql.Date.valueOf(LocalDate.now()),instructor);
+        Address address = new Address(null,"CF244AN","Cardiff","Abby Lane",4,"");
+        Login login = new Login(null,"jbuckland","1234","customer");
+        Instructor instructor = new Instructor(null,"james","buckland","01895430027",login,address);
+        Course course = new Course(null,"Course1","Type2","Cardiff", java.sql.Date.valueOf(LocalDate.now()),instructor);
         this.entityManager.merge(course);
         List<Course> courseList = courseRepoJPA.findAll();
-        assertThat(courseList.get(0).getCourseName()).isEqualTo("Course1");
-        assertThat(courseList.get(0).getCourseType()).isEqualTo("Type2");
-        assertThat(courseList.get(0).getCourseDate()).isEqualTo(Date.valueOf(LocalDate.now()));
-        assertThat(courseList.get(0).getCourseLocation()).isEqualTo("Cardiff");
+        assertThat(courseList.get(courseList.size()-1).getCourseName()).isEqualTo("Course1");
+        assertThat(courseList.get(courseList.size()-1).getCourseType()).isEqualTo("Type2");
+        assertThat(courseList.get(courseList.size()-1).getCourseDate()).isEqualTo(Date.valueOf(LocalDate.now()));
+        assertThat(courseList.get(courseList.size()-1).getCourseLocation()).isEqualTo("Cardiff");
 
     }
 }
