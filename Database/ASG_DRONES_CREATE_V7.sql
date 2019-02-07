@@ -488,6 +488,7 @@ join instructor on instructor.InstructorID = course.Instructor_InstructorID
 group by CourseName 
 order by course.Date;
 end$$
+DELIMITER ;
 CALL update_materialised_view_course_information;
 
 -- -----------------------------------------------------
