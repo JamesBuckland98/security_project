@@ -37,17 +37,17 @@
             <!-- Navbar Menu -->
             <ul class="nav navbar-nav navbar-right">
                 <li class="active">
-                    <a th:href="@{'/admin/' +${adminID}}">Admin</a>
+                    <a th:href="@{/admin}">Admin</a>
                 </li>
                 <li>
-                    <a th:href="@{'/admin/'+${loginID}+'/createcoursedate'}">Create Course</a>
+                    <a th:href="@{/admin/createCourse}">Create Course</a>
                 </li>
                 <li>
                     <a href="#">Course Info</a>
                 </li>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a th:href="@{/register}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                    <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <li><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                 </ul>
             </ul>
         </div>

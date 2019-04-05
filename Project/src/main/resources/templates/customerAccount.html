@@ -33,17 +33,17 @@
             <!-- Navbar Menu -->
             <ul class="nav navbar-nav navbar-right">
                 <li class="active">
-                    <a th:href="@{'/customer/' +${customerID}}">Profile</a>
+                    <a th:href="@{/customer}">Profile</a>
                 </li>
                 <li>
-                    <a th:href="@{'/customer/' +${customerID}+ '/course_progression'}">Progression</a>
+                    <a th:href="@{/customer/course_progression}">Progression</a>
                 </li>
                 <li>
                     <a href="#">Course Info</a>
                 </li>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a th:href="@{/register}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                    <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <li><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
                 </ul>
             </ul>
         </div>
@@ -54,7 +54,7 @@
     <div id="welcome">
         <H2><span th:text="Welcome+' '+${name}"></span></H2>
         <div th:if="${verified != true}">
-        <button class="btn"><a th:href="@{'/customer/' +${customerID}+'/verify_customer'}"> Verify account</a></button>
+        <button class="btn"><a th:href="@{'/customer/verify'}"> Verify account</a></button>
         </div>
     </div>
     <div id="address">
@@ -64,13 +64,13 @@
         <span th:text="${street}">street</span> <br>
         <span th:text="${postCode}">post code</span> <br>
         <span th:text="${city}">city</span> <br>
-        <button class="btn"> <a th:href="@{'/customer/' +${customerID}+'/update_address'}" style="text-decoration:none">Update Address Info</a></button>
+        <button class="btn"> <a th:href="@{/customer/update_address}" style="text-decoration:none">Update Address Info</a></button>
     </div>
     <div id="drone">
         <h2 class="h2">Drone</h2>
         <span th:text="${droneManufacturer}">city</span> <br>
         <span th:text="${droneModel}">city</span> <br>
-        <button class="btn"> <a th:href="@{'/customer/' +${customerID}+'/update_drone'}" style="text-decoration:none">Update Drone Info</a></button>
+        <button class="btn"> <a th:href="@{/customer/update_drone}" style="text-decoration:none">Update Drone Info</a></button>
     </div>
     <div id="course">
         <h2 class="h2">Course</h2>
@@ -95,10 +95,10 @@
                 </tr>
                 </tbody>
             </table>
-            <button class="btn"><a th:href="@{'/customer/' +${customerID}+'/add_course'}" style="text-decoration:none">Change Course</a></button>
+            <button class="btn"><a th:href="@{/customer/add_course}" style="text-decoration:none">Change Course</a></button>
         </div>
         <div th:if="${courses == null}">
-            <button class="btn"> <a th:href="@{'/customer/' +${customerID}+'/add_course'}" style="text-decoration:none">+ add course</a></button>
+            <button class="btn"> <a th:href="@{/customer/add_course}" style="text-decoration:none">+ add course</a></button>
         </div>
     </div>
 </div>

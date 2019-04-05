@@ -37,7 +37,7 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-
+    compile("org.springframework.boot:spring-boot-starter-security")
     // Use MySQL Connector-J
     compile 'mysql:mysql-connector-java'
 }

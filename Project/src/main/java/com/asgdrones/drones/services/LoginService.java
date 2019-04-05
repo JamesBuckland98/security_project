@@ -5,6 +5,7 @@ import com.asgdrones.drones.domain.Login;
 import com.asgdrones.drones.repositories.CustomerRepoJPA;
 import com.asgdrones.drones.repositories.LoginRepoJPA;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,11 +15,13 @@ import java.util.Optional;
 public class LoginService implements LoginServiceInterface {
     private LoginRepoJPA loginRepoJPA;
     private CustomerRepoJPA customerRepoJPA;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    LoginService(LoginRepoJPA lRepo, CustomerRepoJPA cRepo) {
+    LoginService(LoginRepoJPA lRepo, CustomerRepoJPA cRepo, PasswordEncoder pEncoder) {
         loginRepoJPA = lRepo;
         customerRepoJPA = cRepo;
+        passwordEncoder = pEncoder;
     }
 
     @Override
@@ -80,7 +83,8 @@ public class LoginService implements LoginServiceInterface {
         Optional<Login> login = loginRepoJPA.findByUsername(username);
         if (login.isPresent()) {
             String customerPassword = login.get().getPassword();
-            return customerPassword;
+            String password = passwordEncoder.encode(customerPassword);
+            return password;
         }
         return null;
     }

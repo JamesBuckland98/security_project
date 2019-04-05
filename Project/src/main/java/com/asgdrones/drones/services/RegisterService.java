@@ -3,6 +3,7 @@ package com.asgdrones.drones.services;
 import com.asgdrones.drones.domain.*;
 import com.asgdrones.drones.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -11,18 +12,20 @@ import java.time.LocalDate;
 @Service
 public class RegisterService implements RegisterServiceInterface {
     private CustomerRepoJPA customerRepoJPA;
+    private PasswordEncoder passwordEncoder;
     private LoginRepoJPA loginRepoJPA;
     private AddressRepoJPA addressRepoJPA;
     private DroneRepoJPA droneRepoJPA;
     private CreationRepoJPA creationRepoJPA;
 
     @Autowired
-    RegisterService(CustomerRepoJPA cRepo, LoginRepoJPA lRepo, AddressRepoJPA aRepo, DroneRepoJPA dRepo, CreationRepoJPA crRepo) {
+    RegisterService(CustomerRepoJPA cRepo, LoginRepoJPA lRepo, AddressRepoJPA aRepo, DroneRepoJPA dRepo, CreationRepoJPA crRepo, PasswordEncoder pEncoder) {
         customerRepoJPA = cRepo;
         loginRepoJPA = lRepo;
         addressRepoJPA = aRepo;
         droneRepoJPA = dRepo;
         creationRepoJPA = crRepo;
+        passwordEncoder = pEncoder;
     }
 
     @Override
@@ -34,7 +37,7 @@ public class RegisterService implements RegisterServiceInterface {
         Creation creation = new Creation(null, Date.valueOf(LocalDate.now()),Date.valueOf(LocalDate.now().plusYears(2)));
         System.out.println(creation);
         Drone newDrone = new Drone(null, drone.getManufacturer(), drone.getModel());
-        Login newLogin = new Login(null, "customer", login.getUsername(), login.getPassword());
+        Login newLogin = new Login(null, "customer", login.getUsername(), passwordEncoder.encode(login.getPassword()));
         Customer newCustomer = new Customer(null, customer.getFirstName(),
                 customer.getLastName(), customer.getDob(),
                 customer.getEmail(), customer.getPhoneNumber(),

@@ -37,33 +37,9 @@ public class LoginController {
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     public ModelAndView getLogin(Model model, HttpServletResponse response) {
-        response.addCookie(new Cookie("Access", null));
         Login login = new Login();
         model.addAttribute("login", login);
         return new ModelAndView("login", model.asMap());
-    }
-
-    @RequestMapping(value = "login", method = RequestMethod.POST)
-    public RedirectView postLogin(@Valid Login login,
-                                  BindingResult bindingResult,
-                                  HttpServletResponse response,
-                                  Model model) {
-        if (bindingResult.hasErrors()) {
-            System.out.println("Validation error" + bindingResult.getFieldErrors());
-        } else {
-            String access = loginService.checkLogin(login);
-            response.addCookie(new Cookie("Access", access));
-            if (access.equals("none")) {
-                page = "login";
-                System.out.println(page);
-            } else {
-                page = access + "/" + loginService.getUserID(login);
-                System.out.println(page);
-            }
-        }
-
-        model.addAttribute("login", login);
-        return new RedirectView(page);
     }
 
     @RequestMapping(value = "/rememberMe", method = RequestMethod.GET)
@@ -79,6 +55,10 @@ public class LoginController {
         String email =  loginService.getCustomerEmail(username);
         String password = loginService.getCustomerPassword(username);
         emailService.rememberPassword(email, password);
+        return new RedirectView("/login");
+    }
+    @RequestMapping(value = "logout", method = RequestMethod.GET)
+    public RedirectView logout (){
         return new RedirectView("/login");
     }
 }

@@ -3,12 +3,17 @@ package com.asgdrones.drones.controllers;
 import com.asgdrones.drones.domain.Address;
 import com.asgdrones.drones.domain.Course;
 import com.asgdrones.drones.domain.Drone;
+import com.asgdrones.drones.domain.Login;
 import com.asgdrones.drones.enums.Templates;
 import com.asgdrones.drones.repositories.CourseRepoJPA;
+import com.asgdrones.drones.repositories.LoginRepoJPA;
 import com.asgdrones.drones.services.CourseService;
 import com.asgdrones.drones.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jms.JmsProperties;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,194 +29,178 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class CustomerController {
     private CustomerService customerService;
     private CourseService courseService;
-    private Cookie[] access;
     private Templates page;
+    private LoginRepoJPA loginRepoJPA;
 
     @Autowired
-    CustomerController(CustomerService cService, CourseService coService) {
+    CustomerController(CustomerService cService, CourseService coService, LoginRepoJPA lRepo) {
         customerService = cService;
         courseService = coService;
+        loginRepoJPA = lRepo;
     }
 
-    @RequestMapping(value = "customer/{customerID}", method = RequestMethod.GET)
-    public ModelAndView customerPage(Model model,
-                                     HttpServletRequest request,
-                                     @PathVariable("customerID") Long customerID) {
-        access = request.getCookies();
-        for (Cookie obj : access) {
-            if (obj.getName().equals("Access")) {
-                if (obj.getValue().equals("customer")) {
-                    page = Templates.CUSTOMER_ACCOUNT;
-                    Date dob = customerService.getDob(customerID);
-                    Boolean verified = customerService.getVerified(customerID);
-                    String name = customerService.getCustomerName(customerID);
-                    Course course = customerService.getCourse(customerID);
-                    String droneManufacturer = customerService.getDroneManufacturer(customerID);
-                    String droneModel = customerService.getDroneModel(customerID);
-                    String postCode = customerService.getCustomerPostCode(customerID);
-                    Integer houseNumber = customerService.getCustomerHouseNumber(customerID);
-                    String houseName = customerService.GetCustomerHouseName(customerID);
-                    String street = customerService.getCustomerStreet(customerID);
-                    String city = customerService.getCustomerCity(customerID);
-                    model.addAttribute("customerID", customerID);
-                    model.addAttribute("name", name);
-                    model.addAttribute("dob", dob);
-                    model.addAttribute("verified",verified);
-                    model.addAttribute("courses", course);
-                    model.addAttribute("droneManufacturer", droneManufacturer);
-                    model.addAttribute("droneModel", droneModel);
-                    model.addAttribute("postCode", postCode);
-                    model.addAttribute("houseName", houseName);
-                    model.addAttribute("houseNumber", houseNumber);
-                    model.addAttribute("street", street);
-                    model.addAttribute("city", city);
-                } else {
-                    page = Templates.ACCESS_DENIED;
-                }
-            } else {
-                page = Templates.ACCESS_DENIED;
-            }
+    @RequestMapping(value = "customer", method = RequestMethod.GET)
+    public ModelAndView customerProfilePage(Model model,
+                                            HttpServletRequest request, Authentication authentication) {
+        page = Templates.CUSTOMER_ACCOUNT;
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            Optional<Login> user = loginRepoJPA.findByUsername(username);
+            Date dob = customerService.getDob(user.get().getId());
+            Boolean verified = customerService.getVerified(user.get().getId());
+            String name = customerService.getCustomerName(user.get().getId());
+            Course course = customerService.getCourse(user.get().getId());
+            String droneManufacturer = customerService.getDroneManufacturer(user.get().getId());
+            String droneModel = customerService.getDroneModel(user.get().getId());
+            String postCode = customerService.getCustomerPostCode(user.get().getId());
+            Integer houseNumber = customerService.getCustomerHouseNumber(user.get().getId());
+            String houseName = customerService.GetCustomerHouseName(user.get().getId());
+            String street = customerService.getCustomerStreet(user.get().getId());
+            String city = customerService.getCustomerCity(user.get().getId());
+            model.addAttribute("customerID", user.get().getId());
+            model.addAttribute("name", name);
+            model.addAttribute("dob", dob);
+            model.addAttribute("verified", verified);
+            model.addAttribute("courses", course);
+            model.addAttribute("droneManufacturer", droneManufacturer);
+            model.addAttribute("droneModel", droneModel);
+            model.addAttribute("postCode", postCode);
+            model.addAttribute("houseName", houseName);
+            model.addAttribute("houseNumber", houseNumber);
+            model.addAttribute("street", street);
+            model.addAttribute("city", city);
+
         }
         return new ModelAndView(page.toString(), model.asMap());
     }
 
-    @RequestMapping(value = "customer/{customerID}/course_progression", method = RequestMethod.GET)
-    public ModelAndView progressionPage(Model model,
-                                        HttpServletRequest request,
-                                        @PathVariable("customerID") Long customerID) {
-        Integer progression = customerService.getCourseProgression(customerID);
-        String name = customerService.getCustomerName(customerID);
-        System.out.println(name);
-        System.out.println(progression);
-        String nameData[] = new String[]{name};
-        Integer progressionData[] = new Integer[]{progression};
+    @RequestMapping(value = "customer/course_progression", method = RequestMethod.GET)
+    public ModelAndView customerProgress(Model model, HttpServletRequest request, Authentication authentication) {
         page = Templates.CUSTOMER_PROGRESSION;
-        model.addAttribute("name", nameData);
-        model.addAttribute("progression", progressionData);
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            Optional<Login> user = loginRepoJPA.findByUsername(username);
+            Integer progression = customerService.getCourseProgression(user.get().getId());
+            String name = customerService.getCustomerName(user.get().getId());
+            String nameData[] = new String[]{name};
+            Integer progressionData[] = new Integer[]{progression};
+            model.addAttribute("name", nameData);
+            model.addAttribute("progression", progressionData);
+        }
         return new ModelAndView(page.toString(), model.asMap());
     }
 
-    @RequestMapping(value = "/customer/{customerID}/update_address", method = RequestMethod.GET)
-    public ModelAndView updateAddress(Model model,
-                                      HttpServletRequest request,
-                                      @PathVariable("customerID") Long customerID) {
-        access = request.getCookies();
-        for (Cookie obj : access) {
-            if (obj.getName().equals("Access")) {
-                if (obj.getValue().equals("customer")) {
-                    page = Templates.UPDATE_ADDRESS;
-                    Address address = new Address();
-                    String postCode = customerService.getCustomerPostCode(customerID);
-                    Integer houseNumber = customerService.getCustomerHouseNumber(customerID);
-                    String houseName = customerService.GetCustomerHouseName(customerID);
-                    String street = customerService.getCustomerStreet(customerID);
-                    String city = customerService.getCustomerCity(customerID);
-                    model.addAttribute("customerID", customerID);
-                    model.addAttribute("postCode", postCode);
-                    model.addAttribute("houseName", houseName);
-                    model.addAttribute("houseNumber", houseNumber);
-                    model.addAttribute("street", street);
-                    model.addAttribute("city", city);
-                    model.addAttribute("address", address);
-                } else {
-                    page = Templates.ACCESS_DENIED;
-                }
-            } else {
-                page = Templates.ACCESS_DENIED;
-            }
+    @RequestMapping(value = "/customer/update_address", method = RequestMethod.GET)
+    public ModelAndView updateCustomerAddress(Model model, HttpServletRequest request, Authentication authentication) {
+        page = Templates.UPDATE_ADDRESS;
+        Object principal = authentication.getPrincipal();
+        Address address = new Address();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            Optional<Login> user = loginRepoJPA.findByUsername(username);
+            String postCode = customerService.getCustomerPostCode(user.get().getId());
+            Integer houseNumber = customerService.getCustomerHouseNumber(user.get().getId());
+            String houseName = customerService.GetCustomerHouseName(user.get().getId());
+            String street = customerService.getCustomerStreet(user.get().getId());
+            String city = customerService.getCustomerCity(user.get().getId());
+            model.addAttribute("customerID", user.get().getId());
+            model.addAttribute("postCode", postCode);
+            model.addAttribute("houseName", houseName);
+            model.addAttribute("houseNumber", houseNumber);
+            model.addAttribute("street", street);
+            model.addAttribute("city", city);
+            model.addAttribute("address", address);
         }
         return new ModelAndView(String.valueOf(page), model.asMap());
     }
 
-    @RequestMapping(value = "/customer/{customerID}/update_address", method = RequestMethod.POST)
-    public RedirectView updateAddress(@Valid Address address,
-                                      BindingResult bindingResult,
-                                      Model model,
-                                      @PathVariable("customerID") Long customerID) {
-        model.addAttribute("address", address);
-        model.addAttribute("customerID", customerID);
-        System.out.println(address);
-        System.out.println(customerID);
-        customerService.updateAddress(customerID, address);
-        return new RedirectView("/customer/{customerID}");
+    @RequestMapping(value = "customer/update_address", method = RequestMethod.POST)
+    public RedirectView updateCustomerAddress(@Valid Address address, BindingResult bindingResult,
+                                              Model model, Authentication authentication) {
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            Optional<Login> user = loginRepoJPA.findByUsername(username);
+            model.addAttribute("address", address);
+            model.addAttribute("customerID", user.get().getId());
+            System.out.println(address);
+            System.out.println(user.get().getId());
+            customerService.updateAddress(user.get().getId(), address);
+        }
+        return new RedirectView("/customer");
     }
 
-    @RequestMapping(value = "/customer/{customerID}/update_drone", method = RequestMethod.GET)
-    public ModelAndView updateDrone(Model model,
-                                    HttpServletRequest request,
-                                    @PathVariable("customerID") Long customerID) {
-        access = request.getCookies();
-        for (Cookie obj : access) {
-            if (obj.getName().equals("Access")) {
-                if (obj.getValue().equals("customer")) {
-                    page = Templates.UPDATE_DRONE;
-                    Drone drone = new Drone();
-                    model.addAttribute("drone", drone);
-                    model.addAttribute("customerID", customerID);
-                } else {
-                    page = Templates.ACCESS_DENIED;
-                }
-            } else {
-                page = Templates.ACCESS_DENIED;
-            }
+    @RequestMapping(value = "/customer/update_drone", method = RequestMethod.GET)
+    public ModelAndView updateCustomerDrone(Model model, HttpServletRequest request, Authentication authentication) {
+        page = Templates.UPDATE_DRONE;
+        Drone drone = new Drone();
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            Optional<Login> user = loginRepoJPA.findByUsername(username);
+            model.addAttribute("drone", drone);
+            model.addAttribute("customerID", user.get().getId());
         }
         return new ModelAndView(page.toString(), model.asMap());
     }
 
-    @RequestMapping(value = "/customer/{customerID}/update_drone", method = RequestMethod.POST)
-    public RedirectView updateDrone(@Valid Drone drone,
-                                    BindingResult bindingResult,
-                                    Model model,
-                                    @PathVariable("customerID") Long customerID) {
-        model.addAttribute("drone", drone);
-        model.addAttribute("customerID", customerID);
-        customerService.updateDrone(customerID, drone);
-        return new RedirectView("/customer/{customerID}");
+    @RequestMapping(value = "/customer/update_drone", method = RequestMethod.POST)
+    public RedirectView updateCustomerDrone(@Valid Drone drone, BindingResult bindingResult,
+                                            Model model, Authentication authentication) {
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            Optional<Login> user = loginRepoJPA.findByUsername(username);
+            model.addAttribute("drone", drone);
+            model.addAttribute("customerID", user.get().getId());
+            customerService.updateDrone(user.get().getId(), drone);
+        }
+        return new RedirectView("/customer");
     }
 
-    @RequestMapping(value = "/customer/{customerID}/add_course", method = RequestMethod.GET)
-    public ModelAndView addCourse(Model model,
-                                  HttpServletRequest request,
-                                  @PathVariable("customerID") Long customerID) {
-        access = request.getCookies();
-        for (Cookie obj : access) {
-            if (obj.getName().equals("Access")) {
-                if (obj.getValue().equals("customer")) {
-                    page = Templates.ADD_COURSE;
-                    Course course = new Course();
-                    List<Course> courseList = courseService.getCourses();
-                    model.addAttribute("courses", courseList);
-                    model.addAttribute("customerID", customerID);
-                    model.addAttribute("newCourse", course);
-                } else {
-                    page = Templates.ACCESS_DENIED;
-                }
-            } else {
-                page = Templates.ACCESS_DENIED;
-            }
+    @RequestMapping(value = "customer/add_course", method = RequestMethod.GET)
+    public ModelAndView addCustomerCourse(Model model, HttpServletRequest request, Authentication authentication) {
+        Object principal = authentication.getPrincipal();
+        page = Templates.ADD_COURSE;
+        Course course = new Course();
+        List<Course> courseList = courseService.getCourses();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            Optional<Login> user = loginRepoJPA.findByUsername(username);
+            model.addAttribute("courses", courseList);
+            model.addAttribute("customerID", user.get().getId());
+            model.addAttribute("newCourse", course);
         }
         return new ModelAndView(page.toString(), model.asMap());
     }
 
-    @RequestMapping(value = "/customer/{customerID}/add_course", method = RequestMethod.POST)
-    public RedirectView addCourse(@RequestParam Long course_id,
-                                  Model model,
-                                  @PathVariable("customerID") Long customerID) {
-
-        System.out.println(course_id);
-        customerService.addCourse(customerID, course_id);
-        return new RedirectView("/customer/{customerID}");
+    @RequestMapping(value = "/customer/add_course")
+    public RedirectView addCustomerCourse(@RequestParam Long course_id, Model model, Authentication authentication) {
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            Optional<Login> user = loginRepoJPA.findByUsername(username);
+            customerService.addCourse(user.get().getId(), course_id);
+        }
+        return new RedirectView("/customer");
     }
-    @RequestMapping(value = "/customer/{customerID}/verify_customer", method = RequestMethod.GET )
-    public RedirectView verifyCustomer(Model model,
-                                       HttpServletRequest request,
-                                       @PathVariable("customerID") Long customerID){
-        customerService.updateCustomer(customerID);
-        return new RedirectView("/customer/{customerID}");
+
+    @RequestMapping(value = "/customer/verify", method = RequestMethod.GET)
+    public RedirectView verifyCustomerAccount(Model model, HttpServletRequest request, Authentication authentication) {
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            Optional<Login> user = loginRepoJPA.findByUsername(username);
+            customerService.updateCustomer(user.get().getId());
+        }
+        return new RedirectView("/customer");
     }
 }

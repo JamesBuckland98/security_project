@@ -33,7 +33,7 @@
             <!-- Navbar Menu -->
             <ul class="nav navbar-nav navbar-right">
                 <li class="active">
-                    <a th:href="@{'/customer/' +${customerID}}">Profile</a>
+                    <a th:href="@{/customer}">Profile</a>
                 </li>
                 <li>
                     <a href="#">About us</a>
@@ -46,7 +46,7 @@
                 </li>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a th:href="@{/register}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                    <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <li><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                 </ul>
                 </li>
             </ul>
@@ -55,7 +55,7 @@
 </nav>
 <div class="jumbotron">
     <h1>Update address</h1>
-    <form action="#" th:action="@{'/customer/' +${customerID}+'/update_address'}" th:object="${address}" method="post">
+    <form action="#" th:action="@{/customer/update_address}" th:object="${address}" method="post">
         <p>Street Address: <input type="text" th:field="*{street}"/></p>
         <p>House Number: <input type="text" th:field="*{houseNumber}"/></p>
         <p>House Name: <input type="text" th:field="*{houseName}"/></p>

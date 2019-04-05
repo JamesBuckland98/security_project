@@ -76,9 +76,9 @@
             <h1>Login</h1>
             <form action="#" th:action="@{/login}"
                   th:object="${login}" method="post">
-                <p>Username: <input type="text" th:field="*{username}"/></p>
-                <p> Password: <input type="password" th:field="*{password}"/></p>
-                <button class="btn" type="Login">Submit</button> <a th:href="@{/rememberMe}">Forgot password?</a>
+                <p>Username: <input type="text" name="username" th:field="*{username}"/></p>
+                <p> Password: <input type="password" name="password" th:field="*{password}"/></p>
+                <button class="btn" type="submit" value="Sign In">Submit</button> <a th:href="@{/rememberMe}">Forgot password?</a>
             </form>
         </div>
     </div>

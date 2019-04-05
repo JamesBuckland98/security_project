@@ -47,7 +47,7 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <li><a th:href="@{/register}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                    <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <li><a th:href="@{/logout}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                 </ul>
             </ul>
         </div>
@@ -55,7 +55,7 @@
 </nav>
 <div class="jumbotron">
     <h1>Update Drone</h1>
-    <form action="#" th:action="@{'/customer/' +${customerID}+ '/update_drone'}" th:object="${drone}" method="post">
+    <form action="#" th:action="@{/customer/update_drone}" th:object="${drone}" method="post">
         <p>If you do not have a drone then type "N/A" for both fields</p>
         <p>Drone Manufacturer: <input th:field="*{manufacturer}"/></p>
         <p>Drone Model: <input type="text" th:field="*{model}"/></p>
