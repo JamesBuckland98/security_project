@@ -13,7 +13,9 @@ public enum Templates {
     INSTRUCTOR_CUSTOMER("instructorCustomer"),
     UPDATE_ADDRESS("updateAddress"),
     UPDATE_DRONE("updateDrone"),
-    ADD_COURSE("addCourse");
+    ADD_COURSE("addCourse"),
+    ERROR_AUTH("error/auth"),
+    ERROR("error");
 
     private final String name;
 
