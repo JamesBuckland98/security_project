@@ -39,7 +39,9 @@ public class AdminController {
     }
 
     @RequestMapping(value = "admin", method = RequestMethod.GET)
-    public ModelAndView AdminAccount2(Model model, HttpServletRequest request, Authentication authentication) {
+    public ModelAndView AdminAccount(Model model,
+                                     HttpServletRequest request,
+                                     Authentication authentication) {
         page = Templates.ADMIN_ACCOUNT;
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetails){
@@ -78,7 +80,9 @@ public class AdminController {
     }
 
     @RequestMapping(value = "admin/createCourse", method = RequestMethod.GET)
-    public ModelAndView createCourse(Model model, HttpServletRequest request, Authentication authentication) {
+    public ModelAndView createCourse(Model model,
+                                     HttpServletRequest request,
+                                     Authentication authentication) {
         page = Templates.CREATE_COURSE_DATE;
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetails) {

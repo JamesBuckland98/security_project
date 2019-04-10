@@ -47,38 +47,10 @@ public class InstructorController {
         loginRepoJPA = lRepo;
     }
 
-    @RequestMapping(value = "instructor/{instructorID}", method = RequestMethod.GET)
-    public ModelAndView instructor(Model model,
-                                   HttpServletRequest request,
-                                   @PathVariable("instructorID") Long instructorID) {
-        access = request.getCookies();
-        for (Cookie obj : access) {
-            if (obj.getName().equals("Access")) {
-                if (obj.getValue().equals("instructor")) {
-                    page = Templates.INSTRUCTOR_ACCOUNT;
-                } else {
-                    page = Templates.ACCESS_DENIED;
-                }
-            } else {
-                page = Templates.ACCESS_DENIED;
-            }
-        }
-        Instructor instructor = instructorService.getInstructor(instructorID);
-        System.out.println(instructor);
-        List<Course> courses = courseService.findByInstructor(instructor);
-        List<String> addresses = instructorService.getInstructorAddress(instructor.getId());
-        List<Date> dates = instructorService.getCourseDates(instructor.getId());
-        System.out.println(courses);
-        System.out.println(addresses);
-        System.out.println(dates);
-        model.addAttribute("addresses", addresses);
-        model.addAttribute("dates", dates);
-        model.addAttribute("courses", courses);
-        return new ModelAndView(page.toString(), model.asMap());
-    }
-
     @RequestMapping(value = "/instructor", method = RequestMethod.GET)
-    public ModelAndView instructorAccount(Model model, HttpServletRequest request, Authentication authentication){
+    public ModelAndView instructorAccount(Model model,
+                                          HttpServletRequest request,
+                                          Authentication authentication){
         page = Templates.INSTRUCTOR_ACCOUNT;
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetails){
@@ -100,38 +72,10 @@ public class InstructorController {
         return new ModelAndView(page.toString(), model.asMap());
     }
 
-    @RequestMapping(value = "instructor/customers/{instructorID}", method = RequestMethod.GET)
-    public ModelAndView instructorCustomer(Model model, HttpServletRequest request, @PathVariable("instructorID") Long instructorID){
-        access = request.getCookies();
-        for (Cookie obj : access) {
-            if (obj.getName().equals("Access")) {
-                if (obj.getValue().equals("instructor")) {
-                    page = Templates.INSTRUCTOR_CUSTOMER;
-                } else {
-                    page = Templates.ACCESS_DENIED;
-                }
-            } else {
-                page = Templates.ACCESS_DENIED;
-            }
-            Instructor instructor = instructorService.getInstructor(instructorID);
-            List<Course> courses = courseService.findByInstructor(instructor);
-            List<Customer> customers = new ArrayList<>();
-
-            for(Course c: courses){
-                List<Customer> cust = customerService.findByCourseId(c.getId());
-                for(Customer cu: cust) {
-                    customers.add(cu);
-                }
-            }
-            //Course course = courses.get(0);
-            //List<Customer> customers = customerService.findByCourseId(course.getId());
-            model.addAttribute("customers", customers);
-        }
-        return new ModelAndView(page.toString(), model.asMap());
-    }
-
     @RequestMapping(value = "instructor/customers")
-    public ModelAndView instructorCustomers(Model model, HttpServletRequest request, Authentication authentication){
+    public ModelAndView instructorCustomers(Model model,
+                                            HttpServletRequest request,
+                                            Authentication authentication){
         Object principal = authentication.getPrincipal();
         page = Templates.INSTRUCTOR_CUSTOMER;
         if (principal instanceof UserDetails){

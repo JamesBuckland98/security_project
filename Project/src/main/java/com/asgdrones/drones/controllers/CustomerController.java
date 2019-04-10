@@ -82,7 +82,9 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "customer/course_progression", method = RequestMethod.GET)
-    public ModelAndView customerProgress(Model model, HttpServletRequest request, Authentication authentication) {
+    public ModelAndView customerProgress(Model model,
+                                         HttpServletRequest request,
+                                         Authentication authentication) {
         page = Templates.CUSTOMER_PROGRESSION;
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetails) {
@@ -99,7 +101,9 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/customer/update_address", method = RequestMethod.GET)
-    public ModelAndView updateCustomerAddress(Model model, HttpServletRequest request, Authentication authentication) {
+    public ModelAndView updateCustomerAddress(Model model,
+                                              HttpServletRequest request,
+                                              Authentication authentication) {
         page = Templates.UPDATE_ADDRESS;
         Object principal = authentication.getPrincipal();
         Address address = new Address();
@@ -123,8 +127,10 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "customer/update_address", method = RequestMethod.POST)
-    public RedirectView updateCustomerAddress(@Valid Address address, BindingResult bindingResult,
-                                              Model model, Authentication authentication) {
+    public RedirectView updateCustomerAddress(@Valid Address address,
+                                              BindingResult bindingResult,
+                                              Model model,
+                                              Authentication authentication) {
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
@@ -139,7 +145,9 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/customer/update_drone", method = RequestMethod.GET)
-    public ModelAndView updateCustomerDrone(Model model, HttpServletRequest request, Authentication authentication) {
+    public ModelAndView updateCustomerDrone(Model model,
+                                            HttpServletRequest request,
+                                            Authentication authentication) {
         page = Templates.UPDATE_DRONE;
         Drone drone = new Drone();
         Object principal = authentication.getPrincipal();
@@ -167,7 +175,9 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "customer/add_course", method = RequestMethod.GET)
-    public ModelAndView addCustomerCourse(Model model, HttpServletRequest request, Authentication authentication) {
+    public ModelAndView addCustomerCourse(Model model,
+                                          HttpServletRequest request,
+                                          Authentication authentication) {
         Object principal = authentication.getPrincipal();
         page = Templates.ADD_COURSE;
         Course course = new Course();
@@ -182,8 +192,10 @@ public class CustomerController {
         return new ModelAndView(page.toString(), model.asMap());
     }
 
-    @RequestMapping(value = "/customer/add_course")
-    public RedirectView addCustomerCourse(@RequestParam Long course_id, Model model, Authentication authentication) {
+    @RequestMapping(value = "/customer/add_course", method = RequestMethod.POST)
+    public RedirectView addCustomerCourse(@RequestParam Long course_id,
+                                          Model model,
+                                          Authentication authentication) {
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
@@ -194,7 +206,9 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/customer/verify", method = RequestMethod.GET)
-    public RedirectView verifyCustomerAccount(Model model, HttpServletRequest request, Authentication authentication) {
+    public RedirectView verifyCustomerAccount(Model model,
+                                              HttpServletRequest request,
+                                              Authentication authentication) {
         Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
