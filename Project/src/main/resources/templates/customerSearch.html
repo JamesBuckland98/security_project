@@ -68,7 +68,7 @@
         </thead>
         <tbody>
         <tr th:each="customer: ${customers}">
-            <td><a th:href="@{/customer/{customerID}/course_progression(customerID= ${customer.id})}"><span
+            <td><span
                     th:text="${customer.firstName} +' '+ ${customer.lastName}">Customer Name</span></a></td>
             <td><span th:text="${customer.dob}"> </span></td>
             <td><span th:text="${customer.email}"></span></td>
