@@ -40,4 +40,5 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-security")
     // Use MySQL Connector-J
     compile 'mysql:mysql-connector-java'
+    compile 'com.google.guava:guava:19.0-rc2'
 }
