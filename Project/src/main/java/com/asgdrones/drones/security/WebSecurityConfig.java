@@ -21,7 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private LoginRepoJPA loginRepoJPA;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/register", "/register_address", "/register_drone", "/register_customer", "/login")
                 .permitAll()
