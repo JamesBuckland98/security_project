@@ -4,6 +4,8 @@ import com.asgdrones.drones.controllers.ErrorController;
 import com.asgdrones.drones.domain.Login;
 import com.asgdrones.drones.repositories.LoginRepo;
 import com.asgdrones.drones.repositories.LoginRepoJPA;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +23,8 @@ import java.util.Optional;
 @Configuration
 public class MyUserDetailsService implements UserDetailsService {
 
+    private Logger logger = LoggerFactory.getLogger(UserDetailsService.class);
+
     @Autowired
     private LoginRepoJPA loginRepo;
 
@@ -34,6 +38,7 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         String ip = getClientIP();
         if (loginAttemptService.isBlocked(ip)) {
+            logger.debug(ip +" "+"is blocked blocked due to too many login attempts");
             throw new RuntimeException(ip +" "+"is blocked blocked due to too many login attempts");
         }
         Login user = loginRepo.findByUsername(username).get();
