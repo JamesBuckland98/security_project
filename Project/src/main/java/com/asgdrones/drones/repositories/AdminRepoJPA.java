@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface AdminRepoJPA extends JpaRepository<Admin,Long>, AdminRepo {
-
     public Admin findAdminByLogin_Id(Long LoginID);
     public Address findByAddress_Id (Long addressID);
 }
