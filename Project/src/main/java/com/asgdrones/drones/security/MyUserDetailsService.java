@@ -38,7 +38,7 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         String ip = getClientIP();
         if (loginAttemptService.isBlocked(ip)) {
-            logger.debug(ip +" "+"is blocked blocked due to too many login attempts");
+            logger.info(ip +" "+"is blocked blocked due to too many login attempts");
             throw new RuntimeException(ip +" "+"is blocked blocked due to too many login attempts");
         }
         Login user = loginRepo.findByUsername(username).get();
