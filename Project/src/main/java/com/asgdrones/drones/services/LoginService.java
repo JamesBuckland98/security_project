@@ -5,6 +5,7 @@ import com.asgdrones.drones.domain.Login;
 import com.asgdrones.drones.repositories.CustomerRepoJPA;
 import com.asgdrones.drones.repositories.LoginRepoJPA;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class LoginService implements LoginServiceInterface {
     }
 
     @Override
+    @Cacheable("Login")
     public String checkLogin(Login login) {
         List<Login> loginList = loginRepoJPA.findByUsernameAndPassword(login.getUsername(),
                 login.getPassword());
@@ -35,6 +37,7 @@ public class LoginService implements LoginServiceInterface {
     }
 
     @Override
+    @Cacheable("Username")
     public String getUsername(Login login) {
         List<Login> loginList = loginRepoJPA.findByUsernameAndPassword(login.getUsername(),
                 login.getPassword());
@@ -47,6 +50,7 @@ public class LoginService implements LoginServiceInterface {
     }
 
     @Override
+    @Cacheable("UserID")
     public Long getUserID(Login login) {
         List<Login> loginList = loginRepoJPA.findByUsernameAndPassword(login.getUsername(),
                 login.getPassword());
@@ -59,6 +63,7 @@ public class LoginService implements LoginServiceInterface {
     }
 
     @Override
+    @Cacheable("CustomerEmail")
     public String getCustomerEmail(String username) {
         Optional<Login> login = loginRepoJPA.findByUsername(username);
         if (login.isPresent()) {
@@ -76,6 +81,7 @@ public class LoginService implements LoginServiceInterface {
     }
 
     @Override
+    @Cacheable("CustomerPassword")
     public String getCustomerPassword(String username) {
         Optional<Login> login = loginRepoJPA.findByUsername(username);
         if (login.isPresent()) {

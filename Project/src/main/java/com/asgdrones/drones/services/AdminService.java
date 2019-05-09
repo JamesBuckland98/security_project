@@ -6,6 +6,7 @@ import com.asgdrones.drones.domain.Customer;
 import com.asgdrones.drones.repositories.AdminRepoJPA;
 import com.asgdrones.drones.repositories.CustomerRepoJPA;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,24 +24,28 @@ public class AdminService implements AdminServiceInterface {
     }
 
     @Override
+    @Cacheable("admin")
     public Admin getAdmin(Long loginID) {
         Admin admin = adminRepoJPA.findAdminByLogin_Id(loginID);
         return admin;
     }
 
     @Override
+    @Cacheable("customersList")
     public List<Customer> getCustomers() {
         List<Customer> customerList = customerRepoJPA.findAll();
         return customerList;
     }
 
     @Override
+    @Cacheable("customersList")
     public List<Customer> searchCustomers(String searchQuery) {
         List<Customer> customerList = customerRepoJPA.findBySearchTerm(searchQuery);
         return customerList;
     }
 
     @Override
+    @Cacheable("adminName")
     public String getAdminName(Long loginID){
         Admin adminDetails =adminRepoJPA.findByLogin_Id(loginID);
             String adminFirstName = adminDetails.getFirstName();
@@ -50,6 +55,7 @@ public class AdminService implements AdminServiceInterface {
     }
 
     @Override
+    @Cacheable("adminPostCode")
     public  String GetAdminPostCode(Long loginID){
         Admin adminDetails =adminRepoJPA.findByLogin_Id(loginID);
         Address address = adminDetails.getAddress();
@@ -63,6 +69,7 @@ public class AdminService implements AdminServiceInterface {
     }
 
     @Override
+    @Cacheable("adminCity")
     public String GetAdminCity(Long loginID) {
         Admin adminDetails =adminRepoJPA.findByLogin_Id(loginID);
         Address address = adminDetails.getAddress();
@@ -76,6 +83,7 @@ public class AdminService implements AdminServiceInterface {
     }
 
     @Override
+    @Cacheable("adminStreet")
     public String GetAdminStreet(Long loginID) {
         Admin adminDetails =adminRepoJPA.findByLogin_Id(loginID);
         Address address = adminDetails.getAddress();
@@ -89,6 +97,7 @@ public class AdminService implements AdminServiceInterface {
     }
 
     @Override
+    @Cacheable("adminHouseNumber")
     public Integer GetAdminHouseNumber(Long loginID) {
         Admin adminDetails =adminRepoJPA.findByLogin_Id(loginID);
         Address address = adminDetails.getAddress();
@@ -97,6 +106,7 @@ public class AdminService implements AdminServiceInterface {
     }
 
     @Override
+    @Cacheable("adminHouseName")
     public String GetAdminHouseName(Long loginID) {
         Admin adminDetails =adminRepoJPA.findByLogin_Id(loginID);
         Address address = adminDetails.getAddress();

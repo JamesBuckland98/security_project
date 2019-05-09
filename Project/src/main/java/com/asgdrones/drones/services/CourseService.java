@@ -6,6 +6,7 @@ import com.asgdrones.drones.domain.Login;
 import com.asgdrones.drones.repositories.CourseRepoJPA;
 import com.asgdrones.drones.domain.Instructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -22,12 +23,14 @@ public class CourseService implements CourseServiceInterface {
     }
 
     @Override
+    @Cacheable("courses")
     public List<Course> getCourses() {
         List<Course> courseList = courseRepoJPA.findAll();
         return courseList;
     }
 
     @Override
+    @Cacheable("courses")
     public List<Course> findByInstructor(Instructor instructor) {
         return courseRepoJPA.findByInstructor(instructor);
 

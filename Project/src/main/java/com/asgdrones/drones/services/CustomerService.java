@@ -7,6 +7,7 @@ import com.asgdrones.drones.repositories.AddressRepoJPA;
 import com.asgdrones.drones.repositories.CourseRepoJPA;
 import com.asgdrones.drones.repositories.CustomerRepoJPA;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,11 +26,13 @@ public class CustomerService implements CustomerServiceInterface {
     }
 
     @Override
+    @Cacheable("customerList")
     public List<Customer> findAllById(Iterable<Long> id) {
         return customerRepoJPA.findAllById(id);
     }
 
     @Override
+    @Cacheable("customerList")
     public List<Customer> findByCourseId(Long id) {
         return customerRepoJPA.findByCourseId(id);
     }
@@ -99,6 +102,7 @@ public class CustomerService implements CustomerServiceInterface {
     }
 
     @Override
+    @Cacheable("customerName")
     public String getCustomerName(Long id) {
         Customer customer = customerRepoJPA.findByLogin_Id(id);
         String fullName = customer.getFirstName() + " " + customer.getLastName();
@@ -106,6 +110,7 @@ public class CustomerService implements CustomerServiceInterface {
     }
 
     @Override
+    @Cacheable("customerDOB")
     public java.util.Date getDob(Long id) {
         Customer customer = customerRepoJPA.findByLogin_Id(id);
         java.util.Date dob = customer.getDob();
@@ -113,6 +118,7 @@ public class CustomerService implements CustomerServiceInterface {
     }
 
     @Override
+    @Cacheable("CustomerCourse")
     public Course getCourse(Long id) {
         Customer customer = customerRepoJPA.findByLogin_Id(id);
         Course course = customer.getCourse();
@@ -120,6 +126,7 @@ public class CustomerService implements CustomerServiceInterface {
     }
 
     @Override
+    @Cacheable("CustomerDroneManufacturer")
     public String getDroneManufacturer(Long id) {
         Customer customer = customerRepoJPA.findByLogin_Id(id);
         Drone drone = customer.getDrone();
@@ -128,6 +135,7 @@ public class CustomerService implements CustomerServiceInterface {
     }
 
     @Override
+    @Cacheable("CustomerDroneModel")
     public String getDroneModel(Long id) {
         Customer customer = customerRepoJPA.findByLogin_Id(id);
         Drone drone = customer.getDrone();
@@ -136,6 +144,7 @@ public class CustomerService implements CustomerServiceInterface {
     }
 
     @Override
+    @Cacheable("CustomerPostCode")
     public String getCustomerPostCode(Long loginID) {
         Customer customer = customerRepoJPA.findByLogin_Id(loginID);
         Address address = customer.getAddress();
@@ -144,6 +153,7 @@ public class CustomerService implements CustomerServiceInterface {
     }
 
     @Override
+    @Cacheable("CustomerCity")
     public String getCustomerCity(Long loginID) {
         Customer customer = customerRepoJPA.findByLogin_Id(loginID);
         Address address = customer.getAddress();
@@ -152,6 +162,7 @@ public class CustomerService implements CustomerServiceInterface {
     }
 
     @Override
+    @Cacheable("CustomerStreet")
     public String getCustomerStreet(Long loginID) {
         Customer customer = customerRepoJPA.findByLogin_Id(loginID);
         Address address = customer.getAddress();
@@ -160,6 +171,7 @@ public class CustomerService implements CustomerServiceInterface {
     }
 
     @Override
+    @Cacheable("CustomerHouseNumber")
     public Integer getCustomerHouseNumber(Long loginID) {
         Customer customer = customerRepoJPA.findByLogin_Id(loginID);
         Address address = customer.getAddress();
@@ -168,6 +180,7 @@ public class CustomerService implements CustomerServiceInterface {
     }
 
     @Override
+    @Cacheable("CustomerHouseName")
     public String GetCustomerHouseName(Long loginID) {
         Customer customer = customerRepoJPA.findByLogin_Id(loginID);
         Address address = customer.getAddress();

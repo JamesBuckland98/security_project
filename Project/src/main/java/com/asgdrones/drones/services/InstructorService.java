@@ -6,6 +6,7 @@ import com.asgdrones.drones.repositories.CourseRepoJPA;
 import com.asgdrones.drones.repositories.InstructorRepoJPA;
 import com.asgdrones.drones.repositories.LoginRepoJPA;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
@@ -27,12 +28,14 @@ public class InstructorService implements InstructorServiceInterface {
     }
 
     @Override
+    @Cacheable("InstructorAddress")
     public List<String> getInstructorAddress(Long loginID) {
         List<String> addresses = instructorRepoJPA.getInstructorAddresses(loginID);
         return addresses;
     }
 
     @Override
+    @Cacheable("InstructorId")
     public Instructor getInstructorById(Long id) {
         Optional<Login> theLogin = loginRepoJPA.findById(id);
         Optional<Instructor> theInstructor = instructorRepoJPA.findByLogin_Id(theLogin.get().getId());
@@ -40,12 +43,14 @@ public class InstructorService implements InstructorServiceInterface {
     }
 
     @Override
+    @Cacheable("InstrucorCourseDate")
     public List<Date> getCourseDates(Long loginID) {
         List<Date> dates = instructorRepoJPA.getCourseDates(loginID);
         return dates;
     }
 
     @Override
+    @Cacheable("Instructor")
     public Instructor getInstructor(Long id){
         Optional<Instructor> instructorOptional = instructorRepoJPA.findByLogin_Id(id);
         if (instructorOptional.isPresent()) {
