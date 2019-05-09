@@ -1,0 +1,13 @@
+variable "flavor" { default = "m1.large" }
+variable "image1" { default = "CentOS 7 1901" }
+variable "image2" { default = "Debian Stretch 9.5.2" }
+variable "name1" { default = "secure server" }
+variable "name2" { default = "non-secure server" }
+variable "keypair" { default = "cloud" } # you may need to change this
+variable "pool" { default = "cscloud_private_floating" }
+variable "server1_script" { default = "./server1.sh" }
+variable "server2_script" { default = "./server2.sh" }
+variable "server3_script" { default = "./server3.sh" }
+variable "security_description" { default = "Terraform security group" }
+variable "security_name" { default = "tf_security" }
+variable "security_name2" { default = "tf_Jenkins_security" }
