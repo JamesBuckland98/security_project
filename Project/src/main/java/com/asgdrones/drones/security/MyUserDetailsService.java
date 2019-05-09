@@ -18,8 +18,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 @Configuration
 public class MyUserDetailsService implements UserDetailsService {
+
+    private final static Logger LOGGER = Logger.getLogger(MyUserDetailsService.class.getName());
 
     @Autowired
     private LoginRepoJPA loginRepo;
@@ -34,6 +39,7 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         String ip = getClientIP();
         if (loginAttemptService.isBlocked(ip)) {
+            LOGGER.log(Level.ALL, ip +" "+"is blocked blocked due to too many login attempts");
             throw new RuntimeException(ip +" "+"is blocked blocked due to too many login attempts");
         }
         Login user = loginRepo.findByUsername(username).get();
